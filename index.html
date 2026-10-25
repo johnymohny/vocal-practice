@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>Моя вокальная практика</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151d31;--panel2:#1b2740;--text:#f4f7ff;--muted:#aab6cc;--accent:#9be7c4;--line:#2a3854}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 10% -10%,#243656 0%,transparent 60%),var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:760px;margin:auto;padding:24px 16px calc(28px + env(safe-area-inset-bottom))}
+header{margin-bottom:18px} .eyebrow{color:var(--accent);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:clamp(1.8rem,6vw,2.5rem);line-height:1.08;margin:.45rem 0}.sub{color:var(--muted);margin:0}
+.card{background:linear-gradient(145deg,var(--panel),#111a2d);border:1px solid var(--line);border-radius:22px;padding:18px;margin:14px 0;box-shadow:0 12px 35px #0002}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}.step{font-size:.85rem;color:var(--muted)}.pill{border:1px solid #375b55;color:var(--accent);border-radius:999px;padding:5px 10px;font-size:.8rem;white-space:nowrap}
+h2{margin:10px 0 6px;font-size:1.35rem}.desc{color:var(--muted);margin:0 0 12px}
+ol,ul{padding-left:22px}li{margin:6px 0}.timer{text-align:center;padding:16px 0 8px}.time{font-variant-numeric:tabular-nums;font-size:clamp(3.2rem,15vw,5.2rem);font-weight:750;letter-spacing:-.05em;line-height:1.1}.timer-label{font-size:.86rem;color:var(--muted);margin-top:5px}
+.progress{height:6px;border-radius:10px;background:#28334b;overflow:hidden;margin:16px 0 6px}.bar{height:100%;width:0;background:var(--accent);transition:width .2s linear}
+.controls{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:8px;margin-top:12px}button{font:inherit;font-weight:700;border:1px solid var(--line);border-radius:13px;padding:12px 9px;color:var(--text);background:var(--panel2);cursor:pointer;min-height:46px}button.primary{background:var(--accent);color:#10251e;border-color:transparent}button:active{transform:scale(.985)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.nav button{min-height:52px}.exercise-list{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:thin}.exercise-list button{flex:0 0 auto;min-height:40px;padding:8px 12px;font-size:.9rem}.exercise-list button.active{border-color:var(--accent);color:var(--accent);background:#1d3a36}
+.lyrics-grid{display:grid;grid-template-columns:1fr;gap:12px}.song{border:1px solid var(--line);border-radius:16px;padding:12px;background:#10182a}.song h3{margin:0 0 8px;font-size:1rem}.song p{margin:0 0 8px;color:var(--muted);font-size:.88rem}textarea{width:100%;min-height:300px;height:300px;resize:vertical;border:1px solid #34425e;border-radius:12px;background:#0b1221;color:var(--text);font:inherit;padding:12px}textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.hint{font-size:.86rem;color:var(--muted)}.note{border-left:3px solid var(--accent);padding:8px 12px;color:var(--muted);font-size:.9rem}.footer{text-align:center;color:var(--muted);font-size:.82rem;padding:10px 0}
+@media(min-width:600px){.lyrics-grid{grid-template-columns:1fr 1fr}.card{padding:22px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">Тренировка · 15–20 минут</div>
+<h1>Моя вокальная практика</h1>
+<p class="sub">Спокойно, без давления на горло. Выбери упражнение — у каждого свой таймер.</p>
+</header>
+<div class="exercise-list" id="tabs" aria-label="Выбрать упражнение"></div>
+<section class="card" aria-live="polite">
+<div class="topline"><span class="step" id="step">Упражнение 1 из 5</span><span class="pill" id="duration">3 минуты</span></div>
+<h2 id="title"></h2>
+<p class="desc" id="summary"></p>
+<div id="instructions"></div>
+<div class="timer">
+<div class="time" id="time">03:00</div>
+<div class="timer-label" id="timerLabel">Таймер упражнения</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="controls">
+<button id="reset">Сбросить</button><button class="primary" id="toggle">▶ Старт</button><button id="restart">↺ Заново</button>
+</div>
+</div>
+</section>
+<div class="nav"><button id="prev">← Предыдущее</button><button class="primary" id="next">Следующее →</button></div>
+<section class="card" id="lyricsCard" hidden>
+<div class="topline"><span class="eyebrow">Финальное упражнение</span><span class="pill">5–10 минут</span></div>
+<h2>Пропой обе песни на «ня-ня-ня»</h2>
+<p class="desc">Включи оригинал в Яндекс Музыке и пропевай мелодию на слогах «ня-ня-ня». Если появляется зажим, пой тише или попробуй «му».</p>
+<div class="lyrics-grid">
+<div class="song">
+<h3>Акмаль — «Раневская»</h3>
+<p><a href="https://music.yandex.ru/album/31172691/track/125866390" target="_blank" rel="noopener" style="color:#9be7c4">Открыть в Яндекс Музыке ↗</a></p>
+<textarea id="ran">Посиди-сиди со мною, седина, седина
+Серебром твою покрыла голову, а дальше тишина
+Как Раневская играла — ты бы так же не смогла
+Ты же будешь писать мне письма?
+Скажи, ты будешь писать мне письма?
+
+Дай докурю, дай допью за тобой
+Сопротивление бессмысленно!
+Зачем ты отпустила руку мою? Зачем, скажи?
+Там, где окончен спектакль, реальная начинается жизнь
+Чтобы не чувствовать ничего — я притворюсь статуей гипсовой
+Люди, прошу лишь одного: похороните меня за плинтусом
+Чтобы не чувствовать ничего — дай докурю, дай допью
+Но, мама, прошу лишь одного: похороните меня за плинтусом
+
+Я знаю, ты сама, ты сама
+За себя, за всех, со всеми, но одна
+А за окном Луна — твоя верная подруга, одиночества слуга
+Ты же будешь писать мне письма?
+Скажи, ты будешь писать мне?
+Ну дай докурю, дай допью за тобой
+Сопротивление бессмысленно
+
+Зачем ты отпустила руку мою? Зачем, скажи?
+Там, где окончен спектакль, реальная начинается жизнь
+Чтобы не чувствовать ничего — я притворюсь статуей гипсовой
+Люди, прошу лишь одного: похороните меня за плинтусом
+Чтобы не чувствовать ничего — дай докурю, дай допью
+Но, мама, прошу лишь одного: похороните меня за плинтусом
+
+Остановились часы, в полночь не бьют
+Нет больше друзей, которые лгут
+Трагикомедия — выход на бис
+Занавес медленно падает вниз
+Она не играла, она прожила всю эту пьесу
+Так, как смогла. Зачем?
+
+Зачем ты отпустила руку мою? Зачем, скажи?
+Там, где окончен спектакль, реальная начинается жизнь
+Чтобы не чувствовать ничего — я притворюсь статуей гипсовой
+Люди, прошу лишь одного!
+
+Чтобы не чувствовать ничего — дай докурю, дай допью
+Но, мама, прошу лишь одного!
+Чтобы не чувствовать ничего — дай докурю, дай допью
+Но, мама, прошу лишь одного: похороните меня за плинтусом</textarea>
+</div>
+<div class="song">
+<h3>Акмаль — «Приснись»</h3>
+<p><a href="https://music.yandex.ru/album/23292229/track/106695930" target="_blank" rel="noopener" style="color:#9be7c4">Открыть в Яндекс Музыке ↗</a></p>
+<textarea id="pris">Мой дом – это ты
+Моя душа – это ты
+Сам я – это ты
+В песнях я, но это ты
+
+Мысли о тебе, песни про тебя
+Тоска по тебе, родная моя
+Мне бы вернуться туда хотя бы на миг
+Там душе спокойно, и не болит
+Оно кричит и плачет там изнутри
+Но тянет туда, как магнит
+Я боюсь, что стал вообще не тем
+Стал не тем, да и вообще не там
+Я боялся изменить себе, но ты там
+
+Приснись мне в завтрашнюю ночь
+Со мной поговори, ты сможешь мне помочь
+И твои глаза мне, как родимый дом
+Ты сможешь мне помочь в завтрашнюю ночь
+
+Встреть меня вдоль улицы домой
+Расскажи, каким я был порой
+Защити от зла и ото всех
+Мне не даёт спокойствия твой покой
+Я не забыл уставшие глаза
+В свете фар, когда я весь в пыли
+И моя жизнь тебе не даст соврать
+Я тот же самый, кто с тобой был
+
+Без тебя всё как-то не так
+Весна уже как раньше не пахнет
+Я то ли сильный, то ли слабак
+Но забыть тебя, мне совсем никак
+И мне не страшно уйти туда
+Но я по-прежнему дышу
+Там есть ты у меня всегда, я лишь прошу
+
+Приснись мне в завтрашнюю ночь
+Со мной поговори, ты сможешь мне помочь
+И твои глаза мне, как родимый дом
+Ты сможешь мне помочь в завтрашнюю ночь
+
+Приснись мне в завтрашнюю ночь
+Со мной поговори, ты сможешь мне помочь
+И твои глаза мне, как родимый дом
+Ты сможешь мне помочь в завтрашнюю ночь</textarea>
+</div>
+</div>
+<p class="hint">Тексты сохраняются автоматически в этом браузере на данном устройстве.</p>
+</section>
+<section class="card">
+<h2>Общие правила безопасности</h2>
+<ul>
+<li>Пой негромко и на комфортной высоте.</li>
+<li>Не пытайся искусственно сделать голос ниже или хриплее.</li>
+<li>Если появляется боль, жжение или охриплость — остановись.</li>
+</ul>
+</section>
+<div class="footer">Совет: добавь страницу на экран «Домой» в Safari, чтобы открывать её как приложение.</div>
+</main>
+<script>
+const exercises=[
+ {title:'Дыхание животом + «СССС»',mins:3,summary:'Спокойный вдох и ровный выдох со звуком «сссс».',safety:'Не набирай воздух до предела, не втягивай живот резко и не выжимай весь воздух. Если кружится голова — остановись и подыши обычно.',steps:['Вдохни через нос: живот мягко расширяется, плечи расслаблены.','На выдохе ровно произноси «сссс», не выжимая весь воздух.','Сделай 6–8 комфортных повторений. Начинай с 8–12 секунд на выдох.']},
+ {title:'Вибрация губами «БР-Р-Р»',mins:2,summary:'Мягко разогрей голос, как будто изображаешь мотор.',safety:'Губы и челюсть расслаблены. Не проталкивай воздух силой; если губы не вибрируют, отдохни и попробуй тише.',steps:['Расслабь губы и сделай лёгкую вибрацию.','Если получается, плавно меняй высоту голоса вверх и вниз.','Не дави на высоких нотах; повтори 5–8 раз.']},
+ {title:'Мягкое «М-М-М»',mins:2,summary:'Найди ровный звук на удобной ноте.',safety:'Не сжимай губы и зубы. Лёгкая вибрация у губ нормальна; не пытайся специально зажать звук в носу.',steps:['Закрой рот без сжатия губ.','Мягко протяни «мммм» на комфортной ноте.','Перейди к «ммм-мо». Повтори несколько раз без усилия.']},
+ {title:'«ВУ-ВУ-ВУ» на трёх нотах',mins:3,summary:'Простая замена голосовой сирене — без скольжения вверх.',safety:'Выбирай три удобные соседние ноты и пой тихо. Если горло сжимается, уменьши громкость или вернись к более низким нотам.',steps:['Скажи мягкое «ву».','Пропой три соседние ноты: низкую, чуть выше и ещё чуть выше.','Вернись по нотам вниз. Повтори 5–6 раз тихо.','Если «в» мешает, попробуй «му-му-му».']},
+ {title:'Песни на «НЯ-НЯ-НЯ»',mins:5,summary:'Пропой мелодию обеих песен на слогах «ня-ня-ня», без оригинального текста.',safety:'Не пытайся перекричать оригинал и не тяни высокие ноты через зажим. Если «ня» усиливает гнусавость, попробуй «му» или пой тише.',steps:['Выбери «Раневскую» или «Приснись» и включи оригинал.','Сохраняй мелодию и ритм, но пой на «ня-ня-ня».','Отметь трудные места и повтори их тише.','Если «ня» усиливает зажим или гнусавость, попробуй «му».','Когда таймер закончится, можешь продлить тренировку и допеть песню целиком.']}
+];
+let index=0, remaining=exercises[0].mins*60, interval=null, running=false;
+const $=id=>document.getElementById(id);
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function stop(){if(interval)clearInterval(interval);interval=null;running=false}
+function render(){
+ const e=exercises[index]; $('step').textContent=`Упражнение ${index+1} из ${exercises.length}`; $('title').textContent=e.title;
+ $('summary').textContent=e.summary; $('duration').textContent=e.mins+' мин'; $('instructions').innerHTML='<ol>'+e.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol><div class="note"><strong>Безопасность именно здесь:</strong> '+e.safety+'</div>';
+ $('time').textContent=fmt(remaining);$('toggle').textContent=running?'Ⅱ Пауза':'▶ Старт';$('bar').style.width=(1-remaining/(e.mins*60))*100+'%';
+ $('timerLabel').textContent=remaining===0?'Время вышло — отдохни или переходи дальше':'Таймер упражнения';
+ $('prev').disabled=index===0;$('next').textContent=index===exercises.length-1?'К песням ↓':'Следующее →';
+ $('lyricsCard').hidden=index!==exercises.length-1;
+ [...$('tabs').children].forEach((b,i)=>{b.classList.toggle('active',i===index);b.setAttribute('aria-current',i===index?'step':'false')});
+}
+function select(i){stop();index=Math.max(0,Math.min(exercises.length-1,i));remaining=exercises[index].mins*60;render();window.scrollTo({top:0,behavior:'smooth'})}
+exercises.forEach((e,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+e.title.replace('Дыхание животом + ','').replace('Вибрация губами ','');b.onclick=()=>select(i);$('tabs').appendChild(b)});
+// Короткий мягкий звук при нажатии любой кнопки
+document.querySelectorAll('button').forEach(b=>b.addEventListener('click',clickSound));
+let audioCtx=null;
+function tone(freq, startAt, duration, volume=0.07, type='sine'){
+ try{
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return;
+  audioCtx=audioCtx||new AudioCtx();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
+  osc.type=type; osc.frequency.setValueAtTime(freq,audioCtx.currentTime+startAt);
+  gain.gain.setValueAtTime(0.0001,audioCtx.currentTime+startAt);
+  gain.gain.exponentialRampToValueAtTime(volume,audioCtx.currentTime+startAt+0.012);
+  gain.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+startAt+duration);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(audioCtx.currentTime+startAt); osc.stop(audioCtx.currentTime+startAt+duration+0.02);
+ }catch(e){}
+}
+function clickSound(){ tone(740,0,0.055,0.025); }
+function startSound(){ tone(523,0,0.14,0.055); tone(659,0.11,0.18,0.055); }
+function endSound(){ tone(659,0,0.16,0.06); tone(784,0.17,0.16,0.06); tone(988,0.34,0.24,0.06); }
+function saveLyrics(){
+ try{localStorage.setItem('vocal-practice-ran',$('ran').value);localStorage.setItem('vocal-practice-pris',$('pris').value)}catch(e){}
+}
+try{$('ran').value=localStorage.getItem('vocal-practice-ran') ?? $('ran').value;$('pris').value=localStorage.getItem('vocal-practice-pris') ?? $('pris').value}catch(e){}
+$('ran').addEventListener('input',saveLyrics);$('pris').addEventListener('input',saveLyrics);
+$('toggle').onclick=()=>{if(running){stop();render();return}if(remaining<=0){if(index<exercises.length-1){select(index+1);return}else{remaining=exercises[index].mins*60;render()}}running=true;startSound();$('toggle').textContent='Ⅱ Пауза';interval=setInterval(()=>{remaining=Math.max(0,remaining-1);$('time').textContent=fmt(remaining);$('bar').style.width=(1-remaining/(exercises[index].mins*60))*100+'%';if(remaining===0){stop();endSound();if('vibrate' in navigator)navigator.vibrate([180,80,180]);if(index<exercises.length-1){$('timerLabel').textContent='Время вышло — переходим к следующему упражнению';setTimeout(()=>{if(!running&&remaining===0&&index<exercises.length-1)select(index+1)},900)}else{$('toggle').textContent='▶ Ещё раз';$('timerLabel').textContent='Тренировка завершена — отдохни или продли упражнение'}}},1000)};
+$('reset').onclick=()=>{stop();remaining=exercises[index].mins*60;render()};
+$('restart').onclick=()=>{stop();remaining=exercises[index].mins*60;render()};
+$('prev').onclick=()=>select(index-1);$('next').onclick=()=>{if(index===exercises.length-1){$('lyricsCard').hidden=false;$('lyricsCard').scrollIntoView({behavior:'smooth'});}else select(index+1)};
+render();
+</script>
+</body></html>
